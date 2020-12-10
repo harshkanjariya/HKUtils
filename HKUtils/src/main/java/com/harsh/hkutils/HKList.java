@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class HKList extends RelativeLayout {
-	public RecyclerView recyclerView;
+	private RecyclerView recyclerView;
 
 	private LinearLayout emptyLayout;
 	private ImageView emptyListIcon;
@@ -38,6 +38,7 @@ public class HKList extends RelativeLayout {
 
 	private Context context;
 
+	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 	public HKList(@NonNull Context context) {
 		super(context);
 		initLayout(context);
@@ -143,7 +144,7 @@ public class HKList extends RelativeLayout {
 			return data.size();
 		}
 	}
-	static class HKListViewHolder extends RecyclerView.ViewHolder{
+	public static class HKListViewHolder extends RecyclerView.ViewHolder{
 		public HKListViewHolder(@NonNull View itemView) {
 			super(itemView);
 		}
@@ -175,7 +176,7 @@ public class HKList extends RelativeLayout {
 			return itemView.findViewById(res);
 		}
 	}
-	interface HKListHelper<D>{
+	public interface HKListHelper<D>{
 		void bind(HKListViewHolder holder,D object);
 	}
 }
