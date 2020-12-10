@@ -10,8 +10,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:id="@+id/list"
-		app:emptyMessage="Empty List"
-		app:emptyDescription="No data found in list!"
+		app:emptyMessage="No Internet!"
+		app:emptyDescription="Please check your network connection and try again"
 		app:emptyImage="@android:drawable/btn_default"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

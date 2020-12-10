@@ -39,6 +39,7 @@ public class HKList extends RelativeLayout {
 	private TextView emptyListExtraMessage;
 
 	private int item_layout;
+	private final int greyColor=Color.parseColor("#a0a0a0");
 
 	private Activity activity;
 
@@ -56,13 +57,38 @@ public class HKList extends RelativeLayout {
 		recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		this.addView(recyclerView);
 
-		LayoutInflater inflater=activity.getLayoutInflater();
-		emptyLayout= (LinearLayout) inflater.inflate(R.layout.empty_layout,this,false);
+		emptyLayout=new LinearLayout(context);
+		emptyLayout.setOrientation(LinearLayout.VERTICAL);
+		emptyLayout.setId(View.generateViewId());
+		LayoutParams layoutParams=new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		layoutParams.addRule(CENTER_IN_PARENT);
+		emptyLayout.setLayoutParams(layoutParams);
 		addView(emptyLayout);
 
-		emptyListIcon=emptyLayout.findViewById(R.id.empty_image);
-		emptyListMainMessage=emptyLayout.findViewById(R.id.empty_main_message);
-		emptyListExtraMessage=emptyLayout.findViewById(R.id.empty_description);
+		emptyListIcon=new ImageView(context);
+		emptyLayout.addView(emptyListIcon);
+		LinearLayout.LayoutParams iconParam=new LinearLayout.LayoutParams(230,230);
+		iconParam.gravity = Gravity.CENTER;
+		emptyListIcon.setLayoutParams(iconParam);
+		emptyListIcon.setColorFilter(greyColor);
+
+		LinearLayout.LayoutParams emptyLayoutParam=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		emptyLayoutParam.gravity = Gravity.CENTER;
+		emptyLayoutParam.topMargin=40;
+		emptyLayoutParam.leftMargin=100;
+		emptyLayoutParam.rightMargin=100;
+
+		emptyListMainMessage=new TextView(context);
+		emptyListMainMessage.setTextSize(20);
+		emptyListMainMessage.setLayoutParams(emptyLayoutParam);
+		emptyListMainMessage.setPadding(0,0,0,0);
+		emptyListMainMessage.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+		emptyLayout.addView(emptyListMainMessage);
+
+		emptyListExtraMessage=new TextView(context);
+		emptyListExtraMessage.setLayoutParams(emptyLayoutParam);
+		emptyListExtraMessage.setTextAlignment(TEXT_ALIGNMENT_CENTER);
+		emptyLayout.addView(emptyListExtraMessage);
 	}
 	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 	public HKList(@NonNull Context context, @Nullable AttributeSet attrs) {
