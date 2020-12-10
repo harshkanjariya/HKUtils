@@ -1,11 +1,15 @@
 package com.harsh.hkutils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Looper;
+import android.os.strictmode.WebViewMethodCalledOnWrongThreadViolation;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +23,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.UiThread;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HKList extends RelativeLayout {
@@ -32,11 +38,9 @@ public class HKList extends RelativeLayout {
 	private TextView emptyListMainMessage;
 	private TextView emptyListExtraMessage;
 
-	private final int greyColor=Color.parseColor("#a0a0a0");
-
 	private int item_layout;
 
-	private Context context;
+	private Activity activity;
 
 	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 	public HKList(@NonNull Context context) {
@@ -45,43 +49,20 @@ public class HKList extends RelativeLayout {
 	}
 	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 	private void initLayout(Context context){
-		this.context=context;
+		this.activity = (Activity) context;
 
 		recyclerView=new RecyclerView(context);
 		recyclerView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 		recyclerView.setLayoutManager(new LinearLayoutManager(context));
 		this.addView(recyclerView);
 
-		emptyLayout=new LinearLayout(context);
-		emptyLayout.setOrientation(LinearLayout.VERTICAL);
-		emptyLayout.setId(View.generateViewId());
-		LayoutParams layoutParams=new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		layoutParams.addRule(CENTER_IN_PARENT);
-		emptyLayout.setLayoutParams(layoutParams);
+		LayoutInflater inflater=activity.getLayoutInflater();
+		emptyLayout= (LinearLayout) inflater.inflate(R.layout.empty_layout,this,false);
 		addView(emptyLayout);
 
-		emptyListIcon=new ImageView(context);
-		emptyLayout.addView(emptyListIcon);
-		LinearLayout.LayoutParams iconParam=new LinearLayout.LayoutParams(230,230);
-		iconParam.gravity = Gravity.CENTER;
-		emptyListIcon.setLayoutParams(iconParam);
-		emptyListIcon.setColorFilter(greyColor);
-
-		LinearLayout.LayoutParams emptyLayoutParam=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		emptyLayoutParam.gravity = Gravity.CENTER;
-		emptyLayoutParam.topMargin=50;
-		emptyLayoutParam.leftMargin=100;
-		emptyLayoutParam.rightMargin=100;
-
-		emptyListMainMessage=new TextView(context);
-		emptyListMainMessage.setTextSize(20);
-		emptyListMainMessage.setLayoutParams(emptyLayoutParam);
-		emptyListMainMessage.setPadding(0,0,0,0);
-		emptyLayout.addView(emptyListMainMessage);
-
-		emptyListExtraMessage=new TextView(context);
-		emptyListExtraMessage.setLayoutParams(emptyLayoutParam);
-		emptyLayout.addView(emptyListExtraMessage);
+		emptyListIcon=emptyLayout.findViewById(R.id.empty_image);
+		emptyListMainMessage=emptyLayout.findViewById(R.id.empty_main_message);
+		emptyListExtraMessage=emptyLayout.findViewById(R.id.empty_description);
 	}
 	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 	public HKList(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -92,26 +73,46 @@ public class HKList extends RelativeLayout {
 
 		CharSequence charSequence=typedArray.getString(R.styleable.HKList_emptyMessage);
 		if (charSequence==null)
-			charSequence="Empty List!";
-		emptyListMainMessage.setText(charSequence);
+			emptyListMainMessage.setVisibility(GONE);
+		else
+			emptyListMainMessage.setText(charSequence);
 
 		charSequence=typedArray.getString(R.styleable.HKList_emptyDescription);
 		if (charSequence==null)
-			charSequence="No data in list";
-		emptyListExtraMessage.setText(charSequence);
+			emptyListExtraMessage.setVisibility(GONE);
+		else
+			emptyListExtraMessage.setText(charSequence);
 
 		Drawable drawable=typedArray.getDrawable(R.styleable.HKList_emptyImage);
-		if (drawable!=null)
+		if (drawable==null)
+			emptyListIcon.setVisibility(GONE);
+		else
 			emptyListIcon.setImageDrawable(drawable);
 
 		typedArray.recycle();
 	}
+
 	public <D> void init(int item_layout, List<D> list,HKListHelper<D> helper){
+		init(item_layout,list,helper,null);
+	}
+	public <D> void init(int item_layout, List<D> list,HKListHelper<D> helper,HKFilterHelper<D> filterHelper){
+		if (list==null)
+			throw new NullPointerException("data list cannot be null");
+		else if(helper==null)
+			throw new NullPointerException("helper cannot be null");
+
 		this.item_layout=item_layout;
-		MyAdapter<D> adapter=new MyAdapter<>(list,helper);
+		HKAdapter<D> adapter=new HKAdapter<>(list,helper,filterHelper);
 		recyclerView.setAdapter(adapter);
 		if (list.size()>0){
 			emptyLayout.setVisibility(GONE);
+		}
+	}
+	@SuppressWarnings("rawtypes")
+	public void update(){
+		if (recyclerView!=null && recyclerView.getAdapter()!=null){
+			HKAdapter adapter= (HKAdapter) recyclerView.getAdapter();
+			adapter.update();
 		}
 	}
 
@@ -120,63 +121,65 @@ public class HKList extends RelativeLayout {
 		return this;
 	}
 
-	class MyAdapter<D> extends RecyclerView.Adapter<HKListViewHolder>{
+	class HKAdapter<D> extends RecyclerView.Adapter<HKViewHolder>{
+		HKListHelper<D> listHelper;
+		HKFilterHelper<D> filterHelper;
+
 		LayoutInflater inflater;
-		HKListHelper<D> helper;
 		List<D>data;
-		public MyAdapter(List<D>list,HKListHelper<D> helper){
-			inflater= (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			this.helper=helper;
-			this.data=list;
+		List<D>originalData;
+		public HKAdapter(List<D>list,HKListHelper<D> listHelper,HKFilterHelper<D> filterHelper){
+			inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			this.listHelper=listHelper;
+			this.filterHelper=filterHelper;
+			this.originalData=list;
+			update();
+		}
+		public void update(){
+			if (filterHelper!=null)
+				filterHelper.filter(originalData,data);
+			else{
+				data=new ArrayList<>(originalData);
+			}
+			if (data==null)
+				data=new ArrayList<>(originalData);
+			if (Looper.getMainLooper()==Looper.myLooper()){
+				if (getItemCount()==0){
+					emptyLayout.setVisibility(VISIBLE);
+				}else{
+					emptyLayout.setVisibility(GONE);
+				}
+				notifyDataSetChanged();
+			}else{
+				activity.runOnUiThread(()->{
+					if (getItemCount()==0){
+						emptyLayout.setVisibility(VISIBLE);
+					}else{
+						emptyLayout.setVisibility(GONE);
+					}
+					notifyDataSetChanged();
+				});
+			}
 		}
 		@NonNull
 		@Override
-		public HKListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+		public HKViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 			View view=inflater.inflate(item_layout,parent,false);
-			return new HKListViewHolder(view);
+			return new HKViewHolder(view);
 		}
 		@Override
-		public void onBindViewHolder(@NonNull HKListViewHolder holder, int position) {
-			helper.bind(holder,data.get(position));
+		public void onBindViewHolder(@NonNull HKViewHolder holder, int position) {
+			listHelper.bind(holder,data.get(position));
 		}
 		@Override
 		public int getItemCount() {
 			return data.size();
 		}
 	}
-	public static class HKListViewHolder extends RecyclerView.ViewHolder{
-		public HKListViewHolder(@NonNull View itemView) {
-			super(itemView);
-		}
-		public TextView textView(int res){
-			return itemView.findViewById(res);
-		}
-		public void setText(int res,String text){
-			textView(res).setText(text);
-		}
-		public ImageView imageView(int res){
-			return itemView.findViewById(res);
-		}
-		public void setImage(int res,int drawable){
-			imageView(res).setImageResource(drawable);
-		}
-		public void setImage(int res,Drawable drawable){
-			imageView(res).setImageDrawable(drawable);
-		}
-		public View view(int res){
-			return itemView.findViewById(res);
-		}
-		public LinearLayout linearLayout(int res){
-			return itemView.findViewById(res);
-		}
-		public RelativeLayout relativeLayout(int res){
-			return itemView.findViewById(res);
-		}
-		public TableLayout tableLayout(int res){
-			return itemView.findViewById(res);
-		}
+	public interface HKFilterHelper<D>{
+		void filter(List<D> all,List<D> filtered);
 	}
 	public interface HKListHelper<D>{
-		void bind(HKListViewHolder holder,D object);
+		void bind(HKViewHolder holder,D object);
 	}
 }
