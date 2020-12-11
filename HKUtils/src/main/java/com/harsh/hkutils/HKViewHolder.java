@@ -42,4 +42,5 @@ public class HKViewHolder extends RecyclerView.ViewHolder{
 	public TableLayout tableLayout(int res){
 		return itemView.findViewById(res);
 	}
+	public void click(int res,View.OnClickListener listener){ itemView.findViewById(res).setOnClickListener(listener); }
 }
