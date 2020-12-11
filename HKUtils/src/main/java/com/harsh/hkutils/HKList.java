@@ -148,7 +148,7 @@ public class HKList extends RelativeLayout {
 		HKFilterHelper<D> filterHelper;
 
 		LayoutInflater inflater;
-		List<D>data;
+		List<D>data=new ArrayList<>();
 		List<D>originalData;
 		public HKAdapter(List<D>list,HKListHelper<D> listHelper,HKFilterHelper<D> filterHelper){
 			inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -161,10 +161,8 @@ public class HKList extends RelativeLayout {
 			if (filterHelper!=null)
 				filterHelper.filter(originalData,data);
 			else{
-				data=new ArrayList<>(originalData);
+				data.addAll(originalData);
 			}
-			if (data==null)
-				data=new ArrayList<>(originalData);
 			if (Looper.getMainLooper()==Looper.myLooper()){
 				if (getItemCount()==0){
 					emptyLayout.setVisibility(VISIBLE);
