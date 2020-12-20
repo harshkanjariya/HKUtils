@@ -10,8 +10,16 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:id="@+id/list"
+		android:visibility="gone"
 		app:emptyMessage="No Internet!"
 		app:emptyDescription="Please check your network connection and try again"
 		app:emptyImage="@android:drawable/btn_default"/>
+
+	<com.harsh.hkutils.DropDown
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/drop_down"
+		app:itemLayout="@layout/item_drop_down"
+		app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

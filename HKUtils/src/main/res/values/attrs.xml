@@ -5,4 +5,7 @@
 		<attr name="emptyDescription" format="string"/>
 		<attr name="emptyImage" format="reference"/>
 	</declare-styleable>
+	<declare-styleable name="DropDown">
+		<attr name="itemLayout" format="reference"/>
+	</declare-styleable>
 </resources>

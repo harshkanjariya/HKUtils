@@ -28,6 +28,7 @@ import java.util.List;
 
 public class HKList extends RelativeLayout {
 	private RecyclerView recyclerView;
+	private HKAdapter<?> adapter;
 
 	private LinearLayout emptyLayout;
 	private ImageView emptyListIcon;
@@ -124,16 +125,14 @@ public class HKList extends RelativeLayout {
 			throw new NullPointerException("helper cannot be null");
 
 		this.item_layout=item_layout;
-		HKAdapter<D> adapter=new HKAdapter<>(list,helper,filterHelper);
+		adapter=new HKAdapter<>(list,helper,filterHelper);
 		recyclerView.setAdapter(adapter);
 		if (list.size()>0){
 			emptyLayout.setVisibility(GONE);
 		}
 	}
-	@SuppressWarnings("rawtypes")
 	public void update(){
-		if (recyclerView!=null && recyclerView.getAdapter()!=null){
-			HKAdapter adapter= (HKAdapter) recyclerView.getAdapter();
+		if (adapter!=null){
 			adapter.update();
 		}
 	}
@@ -151,7 +150,7 @@ public class HKList extends RelativeLayout {
 		List<D>data=new ArrayList<>();
 		List<D>originalData;
 		public HKAdapter(List<D>list,HKListHelper<D> listHelper,HKFilterHelper<D> filterHelper){
-			inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			inflater = activity.getLayoutInflater();
 			this.listHelper=listHelper;
 			this.filterHelper=filterHelper;
 			this.originalData=list;
@@ -190,7 +189,7 @@ public class HKList extends RelativeLayout {
 		}
 		@Override
 		public void onBindViewHolder(@NonNull HKViewHolder holder, int position) {
-			listHelper.bind(holder,data.get(position));
+			listHelper.bind(holder,data.get(position),position);
 		}
 		@Override
 		public int getItemCount() {
@@ -199,8 +198,5 @@ public class HKList extends RelativeLayout {
 	}
 	public interface HKFilterHelper<D>{
 		void filter(List<D> all,List<D> filtered);
-	}
-	public interface HKListHelper<D>{
-		void bind(HKViewHolder holder,D object);
 	}
 }
