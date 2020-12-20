@@ -15,6 +15,6 @@ allprojects {
 dependencies {
 	...
     implementation 'com.google.android.material:material:1.2.1'
-	implementation 'com.github.harshkanjariya:HKUtils:1.0'
+	implementation 'com.github.harshkanjariya:HKUtils:1.0.3'
 }
 ```
