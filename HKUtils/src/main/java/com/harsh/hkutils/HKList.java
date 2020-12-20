@@ -158,6 +158,7 @@ public class HKList extends RelativeLayout {
 			update();
 		}
 		public void update(){
+			data.clear();
 			if (filterHelper!=null)
 				filterHelper.filter(originalData,data);
 			else{
