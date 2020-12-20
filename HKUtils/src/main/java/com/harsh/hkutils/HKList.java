@@ -136,10 +136,12 @@ public class HKList extends RelativeLayout {
 			adapter.update();
 		}
 	}
-
 	public HKList layoutManager(RecyclerView.LayoutManager layoutManager){
 		recyclerView.setLayoutManager(layoutManager);
 		return this;
+	}
+	public boolean isLast(int position){
+		return adapter.isLast(position);
 	}
 
 	class HKAdapter<D> extends RecyclerView.Adapter<HKViewHolder>{
@@ -194,6 +196,9 @@ public class HKList extends RelativeLayout {
 		@Override
 		public int getItemCount() {
 			return data.size();
+		}
+		public boolean isLast(int position) {
+			return data.size()==position+1;
 		}
 	}
 	public interface HKFilterHelper<D>{

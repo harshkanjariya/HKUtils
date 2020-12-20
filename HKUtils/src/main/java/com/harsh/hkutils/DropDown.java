@@ -41,6 +41,8 @@ public class DropDown extends AppCompatSpinner {
 
 		typedArray.recycle();
 	}
+
+	// adapter setups
 	public void setLayout(int layout){
 		this.item_layout=layout;
 	}
@@ -71,7 +73,10 @@ public class DropDown extends AppCompatSpinner {
 			}
 		});
 	}
-
+	public void update(){
+		if (adapter!=null)
+			adapter.notifyDataSetChanged();
+	}
 	class HKAdapter<D> extends BaseAdapter {
 		HKListHelper<D> listHelper;
 
@@ -96,10 +101,6 @@ public class DropDown extends AppCompatSpinner {
 			listHelper.bind(new HKViewHolder(view),data.get(i),i);
 			return view;
 		}
-	}
-	public void update(){
-		if (adapter!=null)
-		adapter.notifyDataSetChanged();
 	}
 	public interface OnSelectListener<D>{
 		void onSelect(D obj);
