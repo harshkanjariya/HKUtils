@@ -12,6 +12,5 @@
 	</declare-styleable>
 	<declare-styleable name="SelectableEditText">
 		<attr name="itemLayout" />
-		<attr name="caseSensitive" format="boolean"/>
 	</declare-styleable>
 </resources>

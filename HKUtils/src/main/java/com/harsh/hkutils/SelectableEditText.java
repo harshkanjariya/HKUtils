@@ -23,7 +23,6 @@ import java.util.List;
 public class SelectableEditText extends AppCompatAutoCompleteTextView {
 	private int item_layout;
 	private HKAdapter<?> adapter;
-	private boolean caseSensitive;
 
 	private Activity activity;
 	public SelectableEditText(@NonNull Context context) {
@@ -46,7 +45,6 @@ public class SelectableEditText extends AppCompatAutoCompleteTextView {
 		TypedArray typedArray=context.obtainStyledAttributes(attrs,R.styleable.SelectableEditText);
 
 		item_layout=typedArray.getResourceId(R.styleable.SelectableEditText_itemLayout, android.R.layout.simple_spinner_dropdown_item);
-		caseSensitive=typedArray.getBoolean(R.styleable.SelectableEditText_caseSensitive,false);
 
 		typedArray.recycle();
 		setThreshold(1);
@@ -55,6 +53,9 @@ public class SelectableEditText extends AppCompatAutoCompleteTextView {
 	public <D> void init(List<D> data,HKListHelper<D> helper,HKFilterHelper<D> filterHelper){
 		adapter= new HKAdapter<>(activity,data,helper,filterHelper);
 		setAdapter(adapter);
+	}
+	public void update(){
+		adapter.notifyDataSetChanged();
 	}
 	class HKAdapter<D> extends BaseAdapter implements Filterable {
 		List<D> filteredData;
