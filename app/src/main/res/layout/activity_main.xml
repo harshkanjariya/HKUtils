@@ -8,9 +8,10 @@
 
 	<com.harsh.hkutils.HKList
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+		android:layout_height="wrap_content"
 		android:id="@+id/list"
-		android:visibility="gone"
+		app:itemLayout="@layout/item_drop_down"
+		app:layout_constraintTop_toBottomOf="@id/edit"
 		app:emptyMessage="No Internet!"
 		app:emptyDescription="Please check your network connection and try again"
 		app:emptyImage="@android:drawable/btn_default"/>
@@ -21,5 +22,12 @@
 		android:id="@+id/drop_down"
 		app:itemLayout="@layout/item_drop_down"
 		app:layout_constraintTop_toTopOf="parent" />
+
+	<com.harsh.hkutils.SelectableEditText
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/edit"
+		app:itemLayout="@layout/item_drop_down"
+		app:layout_constraintTop_toBottomOf="@+id/drop_down"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

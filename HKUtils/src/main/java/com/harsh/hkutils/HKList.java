@@ -112,9 +112,17 @@ public class HKList extends RelativeLayout {
 		else
 			emptyListIcon.setImageDrawable(drawable);
 
+		item_layout=typedArray.getResourceId(R.styleable.HKList_itemLayout, android.R.layout.simple_list_item_1);
+
 		typedArray.recycle();
 	}
 
+	public <D> void init(List<D> list,HKListHelper<D> helper){
+		init(item_layout,list,helper,null);
+	}
+	public <D> void init(List<D> list,HKListHelper<D> helper,HKFilterHelper<D> filterHelper){
+		init(item_layout,list,helper,filterHelper);
+	}
 	public <D> void init(int item_layout, List<D> list,HKListHelper<D> helper){
 		init(item_layout,list,helper,null);
 	}
@@ -161,7 +169,7 @@ public class HKList extends RelativeLayout {
 		public void update(){
 			data.clear();
 			if (filterHelper!=null)
-				filterHelper.filter(originalData,data);
+				data=filterHelper.filter(originalData);
 			else{
 				data.addAll(originalData);
 			}
@@ -200,8 +208,5 @@ public class HKList extends RelativeLayout {
 		public boolean isLast(int position) {
 			return data.size()==position+1;
 		}
-	}
-	public interface HKFilterHelper<D>{
-		void filter(List<D> all,List<D> filtered);
 	}
 }

@@ -9,8 +9,10 @@ import com.harsh.hkutils.DropDown;
 import com.harsh.hkutils.HKList;
 import com.harsh.hkutils.HKListHelper;
 import com.harsh.hkutils.HKViewHolder;
+import com.harsh.hkutils.SelectableEditText;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -25,8 +27,9 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 
 		HKList hkList=findViewById(R.id.list);
-		hkList.init(R.layout.support_simple_spinner_dropdown_item, list, (holder, object,i) -> {
-			holder.setText(android.R.id.text1,object.clientName);
+		hkList.init(list, (holder, object,i) -> {
+			holder.setText(R.id.txt1, object.clientName);
+			holder.setText(R.id.txt2, object.companyName);
 		});
 		final int[] i = {0};
 		new Thread(()->{
@@ -63,10 +66,33 @@ public class MainActivity extends AppCompatActivity {
 		m.clientName="cl3";
 		m.companyName="cm3";
 		list.add(m);
+
+		hkList.update();
+
 		DropDown dropDown=findViewById(R.id.drop_down);
 		dropDown.init(list, (holder, object,postition) -> {
 			holder.setText(R.id.txt1,object.clientName);
 			holder.setText(R.id.txt2,object.companyName);
+		});
+
+		SelectableEditText selectableEditText=findViewById(R.id.edit);
+		selectableEditText.init(list, (holder, object, position) -> {
+			holder.setText(R.id.txt1, object.clientName);
+			holder.setText(R.id.txt2, object.companyName);
+		}, new SelectableEditText.HKFilterHelper<Meeting>() {
+			@Override
+			public List<Meeting> filter(String prefix, List<Meeting> originalData) {
+				List<Meeting> list=new ArrayList<>();
+				for (Meeting mt:originalData){
+					if (mt.companyName.contains(prefix) || mt.clientName.contains(prefix))
+						list.add(mt);
+				}
+				return list;
+			}
+			@Override
+			public String objectToString(Meeting object) {
+				return object.clientName;
+			}
 		});
 	}
 }
