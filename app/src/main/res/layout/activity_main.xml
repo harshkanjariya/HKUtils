@@ -6,7 +6,7 @@
 	android:layout_height="match_parent"
 	tools:context=".MainActivity">
 
-	<com.harsh.hkutils.HKList
+	<com.harsh.hkutils.list.HKList
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/list"
@@ -16,14 +16,14 @@
 		app:emptyDescription="Please check your network connection and try again"
 		app:emptyImage="@android:drawable/btn_default"/>
 
-	<com.harsh.hkutils.DropDown
+	<com.harsh.hkutils.list.DropDown
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/drop_down"
 		app:itemLayout="@layout/item_drop_down"
 		app:layout_constraintTop_toTopOf="parent" />
 
-	<com.harsh.hkutils.SelectableEditText
+	<com.harsh.hkutils.list.SelectableEditText
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/edit"

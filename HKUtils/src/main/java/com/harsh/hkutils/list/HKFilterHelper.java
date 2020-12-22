@@ -1,4 +1,4 @@
-package com.harsh.hkutils;
+package com.harsh.hkutils.list;
 
 import java.util.List;
 

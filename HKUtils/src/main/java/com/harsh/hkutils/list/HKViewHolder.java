@@ -1,4 +1,4 @@
-package com.harsh.hkutils;
+package com.harsh.hkutils.list;
 
 import android.graphics.drawable.Drawable;
 import android.view.View;

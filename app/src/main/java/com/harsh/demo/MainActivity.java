@@ -3,20 +3,14 @@ package com.harsh.demo;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 
-import com.harsh.hkutils.DropDown;
-import com.harsh.hkutils.HKList;
-import com.harsh.hkutils.HKListHelper;
-import com.harsh.hkutils.HKViewHolder;
-import com.harsh.hkutils.SelectableEditText;
+import com.harsh.hkutils.DialogUtils;
+import com.harsh.hkutils.list.DropDown;
+import com.harsh.hkutils.list.HKList;
+import com.harsh.hkutils.list.SelectableEditText;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 	ArrayList<Meeting>list=new ArrayList<>();
@@ -30,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 		hkList.init(list, (holder, object,i) -> {
 			holder.setText(R.id.txt1, object.clientName);
 			holder.setText(R.id.txt2, object.companyName);
+			holder.click(R.id.layout,view -> { });
 		});
 		final int[] i = {0};
 		new Thread(()->{

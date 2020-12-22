@@ -1,4 +1,4 @@
-package com.harsh.hkutils;
+package com.harsh.hkutils.list;
 
 
 import android.app.Activity;
@@ -8,7 +8,6 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -16,6 +15,10 @@ import android.widget.Filterable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
+
+import com.harsh.hkutils.R;
+import com.harsh.hkutils.list.HKListHelper;
+import com.harsh.hkutils.list.HKViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +45,7 @@ public class SelectableEditText extends AppCompatAutoCompleteTextView {
 	private void commonConstruct(Context context,AttributeSet attrs){
 		activity= (Activity) context;
 
-		TypedArray typedArray=context.obtainStyledAttributes(attrs,R.styleable.SelectableEditText);
+		TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.SelectableEditText);
 
 		item_layout=typedArray.getResourceId(R.styleable.SelectableEditText_itemLayout, android.R.layout.simple_spinner_dropdown_item);
 
@@ -50,7 +53,7 @@ public class SelectableEditText extends AppCompatAutoCompleteTextView {
 		setThreshold(1);
 	}
 
-	public <D> void init(List<D> data,HKListHelper<D> helper,HKFilterHelper<D> filterHelper){
+	public <D> void init(List<D> data, HKListHelper<D> helper, HKFilterHelper<D> filterHelper){
 		adapter= new HKAdapter<>(activity,data,helper,filterHelper);
 		setAdapter(adapter);
 	}

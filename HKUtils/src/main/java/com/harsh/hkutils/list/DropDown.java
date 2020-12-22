@@ -1,25 +1,24 @@
-package com.harsh.hkutils;
+package com.harsh.hkutils.list;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.SimpleAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatSpinner;
-import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.harsh.hkutils.R;
+import com.harsh.hkutils.list.HKListHelper;
+import com.harsh.hkutils.list.HKViewHolder;
+
 import java.util.List;
 
 public class DropDown extends AppCompatSpinner {
@@ -36,7 +35,7 @@ public class DropDown extends AppCompatSpinner {
 		super(context, attrs);
 		this.activity= (Activity) context;
 
-		TypedArray typedArray=context.obtainStyledAttributes(attrs,R.styleable.DropDown);
+		TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.DropDown);
 		item_layout=typedArray.getResourceId(R.styleable.DropDown_itemLayout, android.R.layout.simple_spinner_dropdown_item);
 
 		typedArray.recycle();
@@ -46,7 +45,7 @@ public class DropDown extends AppCompatSpinner {
 	public void setLayout(int layout){
 		this.item_layout=layout;
 	}
-	public <D> void init(List<D>list,HKListHelper<D> helper){
+	public <D> void init(List<D>list, HKListHelper<D> helper){
 		init(list,helper,null);
 	}
 	public <D> void init(int layout,List<D>list,HKListHelper<D> helper){

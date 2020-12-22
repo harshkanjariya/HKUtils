@@ -1,4 +1,4 @@
-package com.harsh.hkutils;
+package com.harsh.hkutils.list;
 
 import android.app.Activity;
 import android.content.Context;
@@ -22,6 +22,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.harsh.hkutils.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +94,7 @@ public class HKList extends RelativeLayout {
 		super(context,attrs);
 		initLayout(context);
 
-		TypedArray typedArray=context.obtainStyledAttributes(attrs,R.styleable.HKList);
+		TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.HKList);
 
 		CharSequence charSequence=typedArray.getString(R.styleable.HKList_emptyMessage);
 		if (charSequence==null)
@@ -117,10 +119,10 @@ public class HKList extends RelativeLayout {
 		typedArray.recycle();
 	}
 
-	public <D> void init(List<D> list,HKListHelper<D> helper){
+	public <D> void init(List<D> list, HKListHelper<D> helper){
 		init(item_layout,list,helper,null);
 	}
-	public <D> void init(List<D> list,HKListHelper<D> helper,HKFilterHelper<D> filterHelper){
+	public <D> void init(List<D> list, HKListHelper<D> helper, HKFilterHelper<D> filterHelper){
 		init(item_layout,list,helper,filterHelper);
 	}
 	public <D> void init(int item_layout, List<D> list,HKListHelper<D> helper){
