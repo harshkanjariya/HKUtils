@@ -48,6 +48,8 @@ public class HttpProcess{
 				client.newCall(request).enqueue(new okhttp3.Callback() {
 					@Override
 					public void onFailure(@NotNull Call call, @NotNull IOException e) {
+						if (Objects.requireNonNull(e.getMessage()).equalsIgnoreCase("Chain validation failed"))
+							e=new IOException("Please set correct system date and try again!");
 						callback.onError(e);
 					}
 					@Override
