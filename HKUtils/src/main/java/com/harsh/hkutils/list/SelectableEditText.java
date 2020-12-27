@@ -61,17 +61,13 @@ public class SelectableEditText extends AppCompatAutoCompleteTextView {
 		adapter= new HKAdapter<>(activity,data,helper,filterHelper);
 		setAdapter(adapter);
 		if (selectListener!=null)
-		setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				D d = (D) parent.getSelectedItem();
-				selectListener.onSelect(d);
-			}
-			@Override
-			public void onNothingSelected(AdapterView<?> adapterView) {
-				selectListener.onSelect(null);
-			}
-		});
+			setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					D d = (D) parent.getItemAtPosition(position);
+					selectListener.onSelect(d);
+				}
+			});
 	}
 	public void update(){
 		adapter.notifyDataSetChanged();
