@@ -101,7 +101,4 @@ public class DropDown extends AppCompatSpinner {
 			return view;
 		}
 	}
-	public interface OnSelectListener<D>{
-		void onSelect(D obj);
-	}
 }

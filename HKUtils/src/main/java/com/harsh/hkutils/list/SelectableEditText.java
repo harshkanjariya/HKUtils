@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -54,8 +55,23 @@ public class SelectableEditText extends AppCompatAutoCompleteTextView {
 	}
 
 	public <D> void init(List<D> data, HKListHelper<D> helper, HKFilterHelper<D> filterHelper){
+		init(data,helper,filterHelper,null);
+	}
+	public <D> void init(List<D> data, HKListHelper<D> helper, HKFilterHelper<D> filterHelper,OnSelectListener<D> selectListener){
 		adapter= new HKAdapter<>(activity,data,helper,filterHelper);
 		setAdapter(adapter);
+		if (selectListener!=null)
+		setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				D d = (D) parent.getSelectedItem();
+				selectListener.onSelect(d);
+			}
+			@Override
+			public void onNothingSelected(AdapterView<?> adapterView) {
+				selectListener.onSelect(null);
+			}
+		});
 	}
 	public void update(){
 		adapter.notifyDataSetChanged();
