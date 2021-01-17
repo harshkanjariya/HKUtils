@@ -61,29 +61,33 @@ public class ExpandableLayout extends ConstraintLayout {
 			expand();
 	}
 	public void expand() {
+		if (!isExpanded) {
+			ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, height);
+			valueAnimator.setDuration(duration);
+			valueAnimator.setInterpolator(interpolator);
+			valueAnimator.addUpdateListener(animation -> {
+				float val = (float) animation.getAnimatedValue();
+				ViewGroup.LayoutParams layoutParams = getLayoutParams();
+				layoutParams.height = (int) val;
+				setLayoutParams(layoutParams);
+			});
+			valueAnimator.start();
+		}
 		isExpanded=true;
-		ValueAnimator valueAnimator=ValueAnimator.ofFloat(0,height);
-		valueAnimator.setDuration(duration);
-		valueAnimator.setInterpolator(interpolator);
-		valueAnimator.addUpdateListener(animation -> {
-			float val= (float) animation.getAnimatedValue();
-			ViewGroup.LayoutParams layoutParams = getLayoutParams();
-			layoutParams.height = (int) val;
-			setLayoutParams(layoutParams);
-		});
-		valueAnimator.start();
 	}
 	public void collapse() {
+		if (isExpanded) {
+			ValueAnimator valueAnimator = ValueAnimator.ofFloat(height, 0);
+			valueAnimator.setDuration(duration);
+			valueAnimator.setInterpolator(interpolator);
+			valueAnimator.addUpdateListener(animation -> {
+				float val = (float) animation.getAnimatedValue();
+				ViewGroup.LayoutParams layoutParams = getLayoutParams();
+				layoutParams.height = (int) val;
+				setLayoutParams(layoutParams);
+			});
+			valueAnimator.start();
+		}
 		isExpanded=false;
-		ValueAnimator valueAnimator=ValueAnimator.ofFloat(height,0);
-		valueAnimator.setDuration(duration);
-		valueAnimator.setInterpolator(interpolator);
-		valueAnimator.addUpdateListener(animation -> {
-			float val = (float) animation.getAnimatedValue();
-			ViewGroup.LayoutParams layoutParams = getLayoutParams();
-			layoutParams.height = (int) val;
-			setLayoutParams(layoutParams);
-		});
-		valueAnimator.start();
 	}
 }
