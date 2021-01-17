@@ -44,7 +44,7 @@ public class ExpandableLayout extends ConstraintLayout {
 				height = getHeight();
 				if (!isExpanded){
 					ViewGroup.LayoutParams layoutParams = getLayoutParams();
-					layoutParams.height = 0;
+					layoutParams.height = 1;
 					setLayoutParams(layoutParams);
 				}
 			}
@@ -62,7 +62,7 @@ public class ExpandableLayout extends ConstraintLayout {
 	}
 	public void expand() {
 		if (!isExpanded) {
-			ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, height);
+			ValueAnimator valueAnimator = ValueAnimator.ofFloat(1, height);
 			valueAnimator.setDuration(duration);
 			valueAnimator.setInterpolator(interpolator);
 			valueAnimator.addUpdateListener(animation -> {
@@ -77,7 +77,7 @@ public class ExpandableLayout extends ConstraintLayout {
 	}
 	public void collapse() {
 		if (isExpanded) {
-			ValueAnimator valueAnimator = ValueAnimator.ofFloat(height, 0);
+			ValueAnimator valueAnimator = ValueAnimator.ofFloat(height, 1);
 			valueAnimator.setDuration(duration);
 			valueAnimator.setInterpolator(interpolator);
 			valueAnimator.addUpdateListener(animation -> {
