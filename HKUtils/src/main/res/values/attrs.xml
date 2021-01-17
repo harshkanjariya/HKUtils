@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<attr name="itemLayout" format="reference"/>
+
 	<declare-styleable name="HKList">
 		<attr name="emptyMessage" format="string"/>
 		<attr name="emptyDescription" format="string"/>
 		<attr name="emptyImage" format="reference"/>
 		<attr name="itemLayout"/>
 	</declare-styleable>
+
 	<declare-styleable name="DropDown">
 		<attr name="itemLayout" />
 	</declare-styleable>
+
 	<declare-styleable name="SelectableEditText">
 		<attr name="itemLayout" />
+	</declare-styleable>
+
+	<declare-styleable name="ExpandableLayout">
+		<attr name="expanded" format="boolean"/>
+		<attr name="duration" format="integer"/>
 	</declare-styleable>
 </resources>
