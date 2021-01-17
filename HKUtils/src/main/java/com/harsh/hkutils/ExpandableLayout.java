@@ -60,7 +60,7 @@ public class ExpandableLayout extends ConstraintLayout {
 		else
 			expand();
 	}
-	private void expand() {
+	public void expand() {
 		isExpanded=true;
 		ValueAnimator valueAnimator=ValueAnimator.ofFloat(0,height);
 		valueAnimator.setDuration(duration);
@@ -73,7 +73,7 @@ public class ExpandableLayout extends ConstraintLayout {
 		});
 		valueAnimator.start();
 	}
-	private void collapse() {
+	public void collapse() {
 		isExpanded=false;
 		ValueAnimator valueAnimator=ValueAnimator.ofFloat(height,0);
 		valueAnimator.setDuration(duration);
