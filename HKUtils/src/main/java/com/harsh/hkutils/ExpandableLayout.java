@@ -50,6 +50,26 @@ public class ExpandableLayout extends ConstraintLayout {
 			}
 		});
 	}
+	public void setExpanded(boolean expanded){
+		isExpanded=expanded;
+		if (height==0) {
+			getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+				@Override
+				public void onGlobalLayout() {
+					getViewTreeObserver().removeOnGlobalLayoutListener(this);
+					height = getHeight();
+
+					ViewGroup.LayoutParams layoutParams = getLayoutParams();
+					layoutParams.height = expanded ? (int) height : 1;
+					setLayoutParams(layoutParams);
+				}
+			});
+		}else{
+			ViewGroup.LayoutParams layoutParams = getLayoutParams();
+			layoutParams.height = expanded ? (int) height : 1;
+			setLayoutParams(layoutParams);
+		}
+	}
 	public void setInterpolator(TimeInterpolator interpolator){
 		if (interpolator!=null)
 			this.interpolator=interpolator;

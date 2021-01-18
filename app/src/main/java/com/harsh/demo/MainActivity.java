@@ -3,8 +3,10 @@ package com.harsh.demo;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.harsh.hkutils.DialogUtils;
+import com.harsh.hkutils.ExpandableLayout;
 import com.harsh.hkutils.list.DropDown;
 import com.harsh.hkutils.list.HKList;
 import com.harsh.hkutils.list.SelectableEditText;
@@ -89,5 +91,12 @@ public class MainActivity extends AppCompatActivity {
 				return object.clientName;
 			}
 		});
+		ExpandableLayout expandableLayout=findViewById(R.id.expandable);
+		expandableLayout.setExpanded(false);
+	}
+
+	public void toggle(View view) {
+		ExpandableLayout expandableLayout=findViewById(R.id.expandable);
+		expandableLayout.toggle();
 	}
 }
