@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
+import okhttp3.Headers;
 import okhttp3.HttpUrl;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -25,9 +26,17 @@ import okhttp3.ResponseBody;
 
 public class HttpProcess{
 	private final String url;
+	private Map<String,String> headers;
+
 	public HttpProcess(String url){
 		this.url=url;
 	}
+
+	public HttpProcess headers(Map<String,String>headers){
+		this.headers=headers;
+		return this;
+	}
+
 	public void get(final Callback callback, final Map<String,String>params){
 		new Thread(new Runnable() {
 			@RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -38,13 +47,16 @@ public class HttpProcess{
 						.writeTimeout(1,TimeUnit.MINUTES)
 						.readTimeout(1,TimeUnit.MINUTES)
 						.build();
-				HttpUrl.Builder urlBuilder= Objects.requireNonNull(HttpUrl.parse(url)).newBuilder();
+				HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(url)).newBuilder();
 				if(params!=null){
 					for(Map.Entry<String, String> param : params.entrySet()) {
 						urlBuilder.addQueryParameter(param.getKey(),param.getValue());
 					}
 				}
-				Request request=new Request.Builder().url(urlBuilder.build()).build();
+				Request.Builder builder=new Request.Builder().url(urlBuilder.build());
+				if (headers!=null)
+					builder.headers(Headers.of(headers));
+				Request request=builder.build();
 				client.newCall(request).enqueue(new okhttp3.Callback() {
 					@Override
 					public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -100,7 +112,10 @@ public class HttpProcess{
 						.writeTimeout(1,TimeUnit.MINUTES)
 						.readTimeout(1,TimeUnit.MINUTES)
 						.build();
-				Request request=new Request.Builder().url(url).post(builder.build()).build();
+				Request.Builder requestBuilder=new Request.Builder().url(url).post(builder.build());
+				if (headers!=null)
+					requestBuilder.headers(Headers.of(headers));
+				Request request=requestBuilder.build();
 				client.newCall(request).enqueue(new okhttp3.Callback() {
 					@Override
 					public void onFailure(@NotNull Call call, @NotNull IOException e) {
