@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HKList extends RelativeLayout {
-	private RecyclerView recyclerView;
+	public RecyclerView recyclerView;
 	private HKAdapter<?> adapter;
 
 	private LinearLayout emptyLayout;
