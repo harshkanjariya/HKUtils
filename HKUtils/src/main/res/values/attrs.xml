@@ -21,4 +21,8 @@
 		<attr name="expanded" format="boolean"/>
 		<attr name="duration" format="integer"/>
 	</declare-styleable>
+
+	<declare-styleable name="EventCalendarView">
+		<attr name="dayLayout" format="reference"/>
+	</declare-styleable>
 </resources>
