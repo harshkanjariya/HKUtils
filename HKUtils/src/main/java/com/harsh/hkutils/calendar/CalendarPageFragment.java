@@ -139,13 +139,15 @@ public class CalendarPageFragment extends Fragment {
 				}
 			}else{
 				Drawable drawable = dot.getBackground();
-				DrawableCompat.setTintList(drawable,
-						new ColorStateList(
-								new int[][]{
-										new int[]{android.R.attr.state_selected},
-										new int[]{-android.R.attr.state_selected}
-								},new int[]{shared.selectedColor,Color.WHITE}));
-				dot.setBackground(drawable);
+				if(drawable!=null) {
+					DrawableCompat.setTintList(drawable,
+							new ColorStateList(
+									new int[][]{
+											new int[]{android.R.attr.state_selected},
+											new int[]{-android.R.attr.state_selected}
+									}, new int[]{shared.selectedColor, Color.WHITE}));
+					dot.setBackground(drawable);
+				}
 			}
 
 			if (position < 7) {

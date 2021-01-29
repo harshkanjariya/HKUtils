@@ -122,6 +122,7 @@ public class EventCalendarView extends LinearLayout{
 				showMonthSelector();
 			}
 		});
+
 		nextButton.setOnClickListener(v -> viewPager.setCurrentItem(2));
 		previousButton.setOnClickListener(v -> viewPager.setCurrentItem(0));
 
@@ -145,12 +146,12 @@ public class EventCalendarView extends LinearLayout{
 				if (state==ViewPager.SCROLL_STATE_IDLE && viewPager.getCurrentItem()!=1) {
 					boolean notify = true;
 					if (viewPager.getCurrentItem() == 2) {
-						if (adapter.calendar[2].get(Calendar.MONTH) == Calendar.DECEMBER && shared.selected.get(Calendar.YEAR)==2099)
+						if (adapter.calendar[2].get(Calendar.MONTH) == Calendar.DECEMBER && adapter.calendar[2].get(Calendar.YEAR)==2099)
 							notify = false;
 						else
 							adapter.nextMonth();
 					} else {
-						if (adapter.calendar[0].get(Calendar.MONTH) == Calendar.JANUARY && shared.selected.get(Calendar.YEAR)==1970)
+						if (adapter.calendar[0].get(Calendar.MONTH) == Calendar.JANUARY && adapter.calendar[0].get(Calendar.YEAR)==1970)
 							notify = false;
 						else
 							adapter.previousMonth();
@@ -163,6 +164,12 @@ public class EventCalendarView extends LinearLayout{
 			}
 		};
 		viewPager.addOnPageChangeListener(pageChangeListener);
+	}
+	public void setOnTitleClick(View.OnClickListener onClickListener){
+		findViewById(R.id.month_year_title).setOnClickListener(onClickListener);
+	}
+	public void update(){
+		adapter.notifyDataSetChanged();
 	}
 	public Calendar getSelected(){
 		Calendar calendar = Calendar.getInstance();
