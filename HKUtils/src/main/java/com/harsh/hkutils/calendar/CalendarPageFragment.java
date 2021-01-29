@@ -57,6 +57,7 @@ public class CalendarPageFragment extends Fragment {
 		adapter=new DayAdapter(Objects.requireNonNull(getContext()),calendar);
 		gridView.setAdapter(adapter);
 
+		Log.e(TAG, "onCreateView: "+calendar);
 		view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 			@Override
 			public void onGlobalLayout() {
