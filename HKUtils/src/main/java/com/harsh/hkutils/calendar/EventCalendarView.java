@@ -263,10 +263,11 @@ public class EventCalendarView extends LinearLayout{
 		adapter.notifyDataSetChanged();
 	}
 	public interface Callback{
+		void onDateSelect(Calendar calendar);
 		void onMonthSelect(int month);
 		void onYearSelect(int year);
 	}
 	public interface DayInflater{
-		void inflate(Calendar calendar, View layout,int type);
+		void inflate(Calendar calendar, View layout,boolean selected,int type);
 	}
 }

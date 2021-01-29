@@ -3,7 +3,6 @@ package com.harsh.hkutils.calendar;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -21,12 +20,11 @@ import android.widget.TextView;
 
 import com.harsh.hkutils.R;
 
-import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class CalendarPageFragment extends Fragment {
 
@@ -37,6 +35,7 @@ public class CalendarPageFragment extends Fragment {
 	int day_layout;
 	Shared shared;
 	SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+
 	public CalendarPageFragment(long millis,Shared shared) {
 		this.calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(millis);
@@ -55,7 +54,7 @@ public class CalendarPageFragment extends Fragment {
 
 		GridView gridView = view.findViewById(R.id.calendar_grid);
 
-		adapter=new DayAdapter(Objects.requireNonNull(getContext()));
+		adapter=new DayAdapter(Objects.requireNonNull(getContext()),calendar);
 		gridView.setAdapter(adapter);
 
 		gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -78,13 +77,25 @@ public class CalendarPageFragment extends Fragment {
 		LayoutInflater inflater;
 		int firstDayOfWeek, maxDay;
 		String[] weeks=new String[]{"Sun","Mon","Tue","Wed","Thu","Fri","Sat"};
+		ArrayList<Calendar>calendars;
 
-		public DayAdapter(Context context) {
+		public DayAdapter(Context context,Calendar calendar) {
 			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 			maxDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
 			calendar.set(Calendar.DAY_OF_MONTH,1);
 			firstDayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)-1;
+
+			int month = calendar.get(Calendar.MONTH);
+			int year = calendar.get(Calendar.YEAR);
+			calendars = new ArrayList<>();
+			for (int i=calendar.getActualMinimum(Calendar.DAY_OF_MONTH);i<=maxDay;i++){
+				Calendar c = Calendar.getInstance();
+				c.set(Calendar.MONTH,month);
+				c.set(Calendar.YEAR,year);
+				c.set(Calendar.DAY_OF_MONTH,i);
+				calendars.add(c);
+			}
 		}
 		@Override
 		public int getCount() {
@@ -105,14 +116,23 @@ public class CalendarPageFragment extends Fragment {
 			int day = position - 6 - firstDayOfWeek;
 			if (29+position-firstDayOfWeek <= maxDay)
 				day = 29+position-firstDayOfWeek;
-			calendar.set(Calendar.DAY_OF_MONTH,day);
+
+			Calendar today = null;
+			boolean selected = false;
+			String selectedString = dateFormat.format(shared.selected.getTime());
+
+			if (day>0 && day<=maxDay){
+				today = calendars.get(day-1);
+				selected = selectedString.equals(dateFormat.format(today.getTime()));
+			}
+
 			if (dayInflater!=null){
 				if (position < 7) {
-					dayInflater.inflate(null, convertView, EventCalendarView.WEEK);
-				}else if (day>0 && day<=maxDay){
-					dayInflater.inflate(calendar,convertView,EventCalendarView.DAY);
+					dayInflater.inflate(null, convertView, false, EventCalendarView.WEEK);
+				}else if (today!=null){
+					dayInflater.inflate(today,convertView,selected,EventCalendarView.DAY);
 				}else{
-					dayInflater.inflate(null,convertView,EventCalendarView.BLANK);
+					dayInflater.inflate(null,convertView, false,EventCalendarView.BLANK);
 				}
 			}else{
 				Drawable drawable = dot.getBackground();
@@ -127,16 +147,21 @@ public class CalendarPageFragment extends Fragment {
 
 			if (position < 7) {
 				number.setText(weeks[position]);
-			}else if (day>0 && day<=maxDay){
+			}else if (today!=null){
 				number.setText(""+(day));
-				if (dateFormat.format(shared.selected.getTime()).equals(dateFormat.format(calendar.getTime()))) {
+				if (selected) {
 					dot.setSelected(true);
+					convertView.setSelected(true);
+					number.setSelected(true);
 				}
-
-				int finalDay = day;
+				Calendar finalToday = today;
 				convertView.setOnClickListener(v -> {
-					calendar.set(Calendar.DAY_OF_MONTH, finalDay);
-					shared.selected.setTimeInMillis(calendar.getTimeInMillis());
+					shared.selected.setTimeInMillis(finalToday.getTimeInMillis());
+					if (shared.callback!=null) {
+						Calendar c = Calendar.getInstance();
+						c.setTimeInMillis(finalToday.getTimeInMillis());
+						shared.callback.onDateSelect(c);
+					}
 					notifyDataSetChanged();
 				});
 			}else{
