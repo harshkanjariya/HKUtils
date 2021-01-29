@@ -57,11 +57,12 @@ public class CalendarPageFragment extends Fragment {
 		adapter=new DayAdapter(Objects.requireNonNull(getContext()),calendar);
 		gridView.setAdapter(adapter);
 
-		gridView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+		view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 			@Override
 			public void onGlobalLayout() {
 				gridView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-				int originalHeight=gridView.getMeasuredHeight();
+				int originalWidth=view.getMeasuredWidth();
+				int originalHeight=originalWidth*6/7;
 				if(shared.height<originalHeight) {
 					ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
 					layoutParams.height = originalHeight;
@@ -140,7 +141,7 @@ public class CalendarPageFragment extends Fragment {
 						new ColorStateList(
 								new int[][]{
 										new int[]{android.R.attr.state_selected},
-										new int[]{-android.R.attr.state_selected},
+										new int[]{-android.R.attr.state_selected}
 								},new int[]{shared.selectedColor,Color.WHITE}));
 				dot.setBackground(drawable);
 			}
