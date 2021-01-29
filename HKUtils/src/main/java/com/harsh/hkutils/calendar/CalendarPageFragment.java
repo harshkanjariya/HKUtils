@@ -63,6 +63,7 @@ public class CalendarPageFragment extends Fragment {
 				gridView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 				int originalWidth=view.getMeasuredWidth();
 				int originalHeight=originalWidth*6/7;
+				Log.e(TAG, "onGlobalLayout: "+originalWidth);
 				if(shared.height<originalHeight) {
 					ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
 					layoutParams.height = originalHeight;
