@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -40,7 +41,7 @@ public class HKList extends RelativeLayout {
 	private int item_layout;
 	private final int greyColor=Color.parseColor("#a0a0a0");
 
-	private Activity activity;
+	private Context context;
 
 	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 	public HKList(@NonNull Context context) {
@@ -49,7 +50,7 @@ public class HKList extends RelativeLayout {
 	}
 	@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
 	private void initLayout(Context context){
-		this.activity = (Activity) context;
+		this.context = (Context) context;
 
 		recyclerView=new RecyclerView(context);
 		recyclerView.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -162,7 +163,7 @@ public class HKList extends RelativeLayout {
 		List<D>data=new ArrayList<>();
 		List<D>originalData;
 		public HKAdapter(List<D>list,HKListHelper<D> listHelper,HKFilterHelper<D> filterHelper){
-			inflater = activity.getLayoutInflater();
+			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			this.listHelper=listHelper;
 			this.filterHelper=filterHelper;
 			this.originalData=list;
@@ -183,7 +184,7 @@ public class HKList extends RelativeLayout {
 				}
 				notifyDataSetChanged();
 			}else{
-				activity.runOnUiThread(()->{
+				new Handler(Looper.getMainLooper()).post(() -> {
 					if (getItemCount()==0){
 						emptyLayout.setVisibility(VISIBLE);
 					}else{

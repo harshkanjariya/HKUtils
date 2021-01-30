@@ -1,18 +1,22 @@
 package com.harsh.demo;
 
+import android.app.AlertDialog;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.harsh.hkutils.ExpandableLayout;
 import com.harsh.hkutils.calendar.EventCalendarView;
@@ -41,6 +45,7 @@ public class CalendarDemoFragment extends Fragment {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
 		EventCalendarView calendarView = view.findViewById(R.id.calendar);
+		calendarView.init(getParentFragmentManager());
 		calendarView.setCallback(new EventCalendarView.Callback() {
 			@Override
 			public void onDateSelect(Calendar calendar) { }
@@ -65,6 +70,14 @@ public class CalendarDemoFragment extends Fragment {
 			}
 		});
 
+		Button button = view.findViewById(R.id.dialog_button);
+		button.setOnClickListener(v -> showDialog());
+
 		return view;
+	}
+
+	private void showDialog() {
+		CustomDialog dialog = new CustomDialog();
+		dialog.show(requireActivity().getSupportFragmentManager(),"Calendar Dialog");
 	}
 }

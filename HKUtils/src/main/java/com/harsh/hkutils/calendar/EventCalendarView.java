@@ -1,5 +1,6 @@
 package com.harsh.hkutils.calendar;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -10,12 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
@@ -37,8 +41,11 @@ public class EventCalendarView extends LinearLayout{
 	private ViewPager viewPager;
 	CalendarPagerAdapter adapter;
 	private TextView monthTitle;
+	private ImageView nextButton;
+	private ImageView previousButton;
 
 	Shared shared;
+	SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", Locale.US);
 
 	public boolean isMonthView = false;
 	public boolean isYearView = false;
@@ -98,18 +105,19 @@ public class EventCalendarView extends LinearLayout{
 		shared.selectedColor = ContextCompat.getColor(context,R.color.colorPrimary);
 		selectedBackgroundResource = R.drawable.calendar_selected_background;
 
-		AppCompatActivity activity= (AppCompatActivity) context;
-		adapter = new CalendarPagerAdapter(activity.getSupportFragmentManager(),shared);
-
 		monthTitle = findViewById(R.id.month_title);
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", Locale.US);
-		monthTitle.setText(dateFormat.format(adapter.calendar[1].getTime()));
 		monthList = findViewById(R.id.month_list);
 
-		ImageButton nextButton = findViewById(R.id.next_month_button);
-		ImageButton previousButton = findViewById(R.id.previous_month_button);
+		nextButton = findViewById(R.id.next_month_button);
+		previousButton = findViewById(R.id.previous_month_button);
 
 		viewPager=findViewById(R.id.calendar_pager);
+	}
+	public void init(FragmentManager fragmentManager){
+		adapter = new CalendarPagerAdapter(fragmentManager, shared);
+
+		monthTitle.setText(dateFormat.format(adapter.calendar[1].getTime()));
+
 		viewPager.setAdapter(adapter);
 		viewPager.setCurrentItem(1);
 

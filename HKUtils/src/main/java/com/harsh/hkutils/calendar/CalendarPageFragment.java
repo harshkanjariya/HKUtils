@@ -57,14 +57,14 @@ public class CalendarPageFragment extends Fragment {
 		adapter=new DayAdapter(Objects.requireNonNull(getContext()),calendar);
 		gridView.setAdapter(adapter);
 
-		Log.e(TAG, "onCreateView: "+calendar);
 		view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 			@Override
 			public void onGlobalLayout() {
 				gridView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
 				int originalWidth=view.getMeasuredWidth();
 				int originalHeight=originalWidth*6/7;
-				Log.e(TAG, "onGlobalLayout: "+originalWidth);
+
 				if(shared.height<originalHeight) {
 					ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
 					layoutParams.height = originalHeight;
