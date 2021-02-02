@@ -13,14 +13,17 @@ public class CalendarPagerAdapter extends FragmentStatePagerAdapter {
 
 	public CalendarPagerAdapter(@NonNull FragmentManager fm, Shared shared) {
 		super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-		calendar = new Calendar[]{
-				Calendar.getInstance(),
-				Calendar.getInstance(),
-				Calendar.getInstance()
-		};
+		this.shared = shared;
+
+		Calendar first = Calendar.getInstance();
+		Calendar second = Calendar.getInstance();
+		Calendar third = Calendar.getInstance();
+		first.setTimeInMillis(shared.selected.getTimeInMillis());
+		second.setTimeInMillis(shared.selected.getTimeInMillis());
+		third.setTimeInMillis(shared.selected.getTimeInMillis());
+		calendar = new Calendar[]{first, second, third};
 		calendar[0].add(Calendar.MONTH,-1);
 		calendar[2].add(Calendar.MONTH,1);
-		this.shared = shared;
 	}
 	public void nextMonth(){
 		for (Calendar c:calendar)

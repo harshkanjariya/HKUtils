@@ -44,8 +44,12 @@ public class CalendarDemoFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_calendar_demo, container, false);
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2020,11,18);
+
 		EventCalendarView calendarView = view.findViewById(R.id.calendar);
-		calendarView.init(getParentFragmentManager());
+		calendarView.init(getParentFragmentManager(),calendar);
+
 		calendarView.setCallback(new EventCalendarView.Callback() {
 			@Override
 			public void onDateSelect(Calendar calendar) { }

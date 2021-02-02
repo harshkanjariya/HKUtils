@@ -114,6 +114,12 @@ public class EventCalendarView extends LinearLayout{
 		viewPager=findViewById(R.id.calendar_pager);
 	}
 	public void init(FragmentManager fragmentManager){
+		init(fragmentManager,null);
+	}
+	public void init(FragmentManager fragmentManager,Calendar initialDate){
+		if (initialDate!=null)
+			shared.selected.setTimeInMillis(initialDate.getTimeInMillis());
+
 		adapter = new CalendarPagerAdapter(fragmentManager, shared);
 
 		monthTitle.setText(dateFormat.format(adapter.calendar[1].getTime()));
@@ -183,6 +189,10 @@ public class EventCalendarView extends LinearLayout{
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(shared.selected.getTimeInMillis());
 		return calendar;
+	}
+	public void setSelected(Calendar calendar){
+		shared.selected.setTimeInMillis(calendar.getTimeInMillis());
+		adapter.update();
 	}
 	private void showMonthSelector() {
 		isYearView = false;
