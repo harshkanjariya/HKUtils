@@ -25,4 +25,15 @@
 	<declare-styleable name="EventCalendarView">
 		<attr name="dayLayout" format="reference"/>
 	</declare-styleable>
+
+	<declare-styleable name="CircularProgressButton">
+		<attr name="progressBarWidth" format="dimension"/>
+		<attr name="progressColor" format="color"/>
+		<attr name="progressBackgroundColor" format="color"/>
+		<attr name="buttonColor" format="color"/>
+		<attr name="shadowColor" format="color"/>
+		<attr name="elevation" format="dimension"/>
+		<attr name="android:duration" format="integer"/>
+		<attr name="maxScale" format="float"/>
+	</declare-styleable>
 </resources>

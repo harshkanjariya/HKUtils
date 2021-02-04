@@ -4,12 +4,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.harsh.hkutils.ExpandableLayout;
+import com.harsh.hkutils.ui.CircularProgressButton;
 
 public class SlideAnimationDemoFragment extends Fragment {
 
@@ -22,12 +24,23 @@ public class SlideAnimationDemoFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_slide_animation_demo, container, false);
 
 		Button btn = view.findViewById(R.id.btn);
-		btn.setOnClickListener(new View.OnClickListener() {
+		btn.setOnClickListener(v -> {
+			ExpandableLayout expandableLayout = view.findViewById(R.id.expandable);
+			expandableLayout.toggle();
+		});
+		CircularProgressButton button = view.findViewById(R.id.circular_btn);
+		button.setCallback(new CircularProgressButton.Callback() {
 			@Override
-			public void onClick(View v) {
-				ExpandableLayout expandableLayout = view.findViewById(R.id.expandable);
-				expandableLayout.toggle();
+			public void onComplete() {
+				if (button.isReverse()){
+					button.setText("hello");
+				}else{
+					button.setText("olleh");
+				}
+				button.setReverse(!button.isReverse());
 			}
+			@Override
+			public void onCancel() {}
 		});
 
 		return view;
