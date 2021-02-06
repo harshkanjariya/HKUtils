@@ -43,6 +43,8 @@ public class EventCalendarView extends LinearLayout{
 	private TextView monthTitle;
 	private ImageView nextButton;
 	private ImageView previousButton;
+	public int monthTextSize = 20;
+	public int selectedMonthTextSize = 25;
 
 	Shared shared;
 	SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM yyyy", Locale.US);
@@ -212,10 +214,10 @@ public class EventCalendarView extends LinearLayout{
 					if(shared.selected.get(Calendar.MONTH)==position) {
 						tv.setBackgroundResource(selectedBackgroundResource);
 						tv.setTextColor(shared.selectedColor);
-						tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP,25);
+						tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP,selectedMonthTextSize);
 					} else {
 						tv.setTextColor(Color.BLACK);
-						tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP,20);
+						tv.setTextSize(TypedValue.COMPLEX_UNIT_DIP,monthTextSize);
 					}
 					holder.click(R.id.month_layout_particular, view -> {
 						if (shared.callback!=null)
