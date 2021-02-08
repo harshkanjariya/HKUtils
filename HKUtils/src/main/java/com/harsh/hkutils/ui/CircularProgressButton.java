@@ -64,7 +64,7 @@ public class CircularProgressButton
 		setOnTouchListener(this);
 	}
 	ValueAnimator animator;
-	private void animateProgress(){
+	public void start(){
 		if(reverse)
 			animator = ValueAnimator.ofFloat(progress,0);
 		else
@@ -111,11 +111,17 @@ public class CircularProgressButton
 		animator.setDuration(duration);
 		animator.start();
 	}
+	public boolean isRunning(){
+		return animator != null && animator.isRunning();
+	}
+	public void cancel(){
+		animator.cancel();
+	}
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		switch (event.getAction()){
 			case MotionEvent.ACTION_DOWN:
-				animateProgress();
+				start();
 				break;
 			case MotionEvent.ACTION_UP:
 				animator.cancel();
@@ -180,7 +186,9 @@ public class CircularProgressButton
 		if(reverse) {
 			setScaleX(1 + maxScale);
 			setScaleY(1 + maxScale);
+			progress = 360;
 		} else {
+			progress = 0;
 			setScaleX(1);
 			setScaleY(1);
 		}

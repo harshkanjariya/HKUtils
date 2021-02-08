@@ -35,7 +35,6 @@
 		android:textSize="25dp"
 		android:textColor="#fff"
 		android:padding="12dp"
-		app:maxScale="2"
 		app:elevation="10dp"
 		app:progressBarWidth="50dp"
 		app:layout_constraintLeft_toLeftOf="parent"

@@ -24,11 +24,17 @@ public class SlideAnimationDemoFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_slide_animation_demo, container, false);
 
 		Button btn = view.findViewById(R.id.btn);
+		CircularProgressButton button = view.findViewById(R.id.circular_btn);
+
+		button.setReverse(true);
 		btn.setOnClickListener(v -> {
 			ExpandableLayout expandableLayout = view.findViewById(R.id.expandable);
 			expandableLayout.toggle();
+			if (button.isRunning())
+				button.cancel();
+			else
+				button.start();
 		});
-		CircularProgressButton button = view.findViewById(R.id.circular_btn);
 		button.setCallback(new CircularProgressButton.Callback() {
 			@Override
 			public void onComplete() {
@@ -42,7 +48,6 @@ public class SlideAnimationDemoFragment extends Fragment {
 			@Override
 			public void onCancel() {}
 		});
-
 		return view;
 	}
 }
