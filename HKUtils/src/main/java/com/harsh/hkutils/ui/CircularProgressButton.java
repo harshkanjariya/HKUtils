@@ -72,6 +72,8 @@ public class CircularProgressButton
 		animator.addUpdateListener(animation -> {
 			float value = (float) animation.getAnimatedValue();
 			progress = value;
+			if (callback!=null)
+				callback.onProgress(progress/360);
 			setScaleX(1+value*maxScale/360);
 			setScaleY(1+value*maxScale/360);
 			invalidate();
@@ -96,6 +98,8 @@ public class CircularProgressButton
 				valueAnimator.addUpdateListener(animation1 -> {
 					float value = (float) animation1.getAnimatedValue();
 					progress = value;
+					if (callback!=null)
+						callback.onProgress(progress/360);
 					setScaleX(1+value*maxScale/360);
 					setScaleY(1+value*maxScale/360);
 					invalidate();
@@ -111,11 +115,15 @@ public class CircularProgressButton
 		animator.setDuration(duration);
 		animator.start();
 	}
+	private boolean cancelable = true;
+	public void cancelable(boolean value){
+		cancelable = value;
+	}
 	public boolean isRunning(){
 		return animator != null && animator.isRunning();
 	}
 	public void cancel(){
-		animator.cancel();
+		if (cancelable)animator.cancel();
 	}
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
@@ -124,7 +132,7 @@ public class CircularProgressButton
 				start();
 				break;
 			case MotionEvent.ACTION_UP:
-				animator.cancel();
+				if (cancelable)animator.cancel();
 				break;
 		}
 		return true;
@@ -180,6 +188,7 @@ public class CircularProgressButton
 	}
 	public interface Callback{
 		void onComplete();
+		void onProgress(float percentage);
 		void onCancel();
 	}
 	public void setReverse(boolean reverse) {

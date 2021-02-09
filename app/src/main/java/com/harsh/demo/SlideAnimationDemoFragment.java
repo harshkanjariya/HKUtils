@@ -44,6 +44,16 @@ public class SlideAnimationDemoFragment extends Fragment {
 					button.setText("olleh");
 				}
 				button.setReverse(!button.isReverse());
+				if (button.isReverse()) {
+					button.start();
+					button.cancelable(false);
+				}else{
+					button.cancelable(true);
+				}
+			}
+			@Override
+			public void onProgress(float percentage) {
+				Log.e("55", "SlideAnimationDemoFragment > onProgress: " + percentage);
 			}
 			@Override
 			public void onCancel() {}
