@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -83,7 +82,7 @@ public class CircularProgressButton
 			public void onAnimationStart(Animator animation) { }
 			@Override
 			public void onAnimationEnd(Animator animation) {
-				if ((!reverse && progress==360) || (reverse && progress==0)) {
+				if (progress==360 || progress==0) {
 					if (callback!=null)
 						callback.onComplete();
 				}
@@ -115,6 +114,7 @@ public class CircularProgressButton
 		animator.setDuration(duration);
 		animator.start();
 	}
+
 	private boolean cancelable = true;
 	public void cancelable(boolean value){
 		cancelable = value;
@@ -125,6 +125,9 @@ public class CircularProgressButton
 	public void cancel(){
 		if (cancelable)animator.cancel();
 	}
+	public float progress(){return progress/360;}
+	public boolean isCancelable() { return cancelable; }
+
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 		switch (event.getAction()){
