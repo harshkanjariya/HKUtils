@@ -59,6 +59,7 @@ public class CircularProgressButton
 	BlurMaskFilter blurMaskFilter;
 	private void commonConstruct(){
 		paint = new Paint();
+		setLayerType(LAYER_TYPE_SOFTWARE,paint);
 		blurMaskFilter = new BlurMaskFilter(elevation, BlurMaskFilter.Blur.NORMAL);
 		setOnTouchListener(this);
 	}
