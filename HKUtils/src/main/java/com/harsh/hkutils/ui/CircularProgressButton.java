@@ -23,14 +23,16 @@ public class CircularProgressButton
 		implements View.OnTouchListener {
 
 	float progress = 0;
-	float maxScale;
+	public float maxScale;
 	Callback callback;
-	float progressBarWidth;
-	int progressColor;
-	int buttonColor;
-	int shadowColor;
-	int progressBackgroundColor;
-	float elevation;
+
+	public float progressBarWidth;
+	public int progressColor;
+	public int buttonColor;
+	public int shadowColor;
+	public int progressBackgroundColor;
+
+	public float elevation;
 	private boolean reverse = false;
 	int duration;
 
