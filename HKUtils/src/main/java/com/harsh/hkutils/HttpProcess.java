@@ -1,6 +1,7 @@
 package com.harsh.hkutils;
 
 import android.os.Build;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 
 import androidx.annotation.RequiresApi;
@@ -76,6 +77,15 @@ public class HttpProcess{
 									JSONObject object=new JSONObject(body.string());
 									callback.onResponse(object);
 								} catch (JSONException e){
+									StackTraceElement[] s = e.getStackTrace();
+									for (StackTraceElement stackTraceElement : s) {
+										String builder = "(" + stackTraceElement.getFileName() +
+												":" +
+												stackTraceElement.getLineNumber() + ")" +
+												"," +
+												stackTraceElement.getMethodName();
+										Log.e("Error", builder);
+									}
 									callback.onError(new IOException("Invalid response format! "+e.getMessage()));
 								}
 							}else{
@@ -143,7 +153,16 @@ public class HttpProcess{
 									JSONObject object=new JSONObject(res);
 									callback.onResponse(object);
 								} catch (JSONException e){
-									callback.onError(new IOException("Invalid response format! "+e.getMessage()+" => "+res));
+									StackTraceElement[] s = e.getStackTrace();
+									for (StackTraceElement stackTraceElement : s) {
+										String builder = "(" + stackTraceElement.getFileName() +
+												":" +
+												stackTraceElement.getLineNumber() + ")" +
+												"," +
+												stackTraceElement.getMethodName();
+										Log.e("Error", builder);
+									}
+									callback.onError(new IOException("Invalid response format! "+e.getMessage()));
 								}
 							}else{
 								callback.onError(new IOException("Null body"));
