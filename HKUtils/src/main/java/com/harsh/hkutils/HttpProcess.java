@@ -162,7 +162,7 @@ public class HttpProcess{
 												stackTraceElement.getMethodName();
 										Log.e("Error", builder);
 									}
-									callback.onError(new IOException("Invalid response format! "+e.getMessage()));
+									callback.onError(new IOException(e.getMessage()+" : "+res));
 								}
 							}else{
 								callback.onError(new IOException("Null body"));
