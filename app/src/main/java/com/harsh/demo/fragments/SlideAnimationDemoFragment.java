@@ -1,4 +1,4 @@
-package com.harsh.demo;
+package com.harsh.demo.fragments;
 
 import android.os.Bundle;
 
@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.harsh.demo.R;
 import com.harsh.hkutils.ExpandableLayout;
 import com.harsh.hkutils.ui.CircularProgressButton;
 

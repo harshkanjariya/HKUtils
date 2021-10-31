@@ -1,4 +1,4 @@
-package com.harsh.demo;
+package com.harsh.demo.fragments;
 
 import android.os.Bundle;
 
@@ -8,7 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.harsh.hkutils.ExpandableLayout;
+import com.harsh.demo.models.Meeting;
+import com.harsh.demo.R;
 import com.harsh.hkutils.list.DropDown;
 import com.harsh.hkutils.list.HKList;
 import com.harsh.hkutils.list.SelectableEditText;

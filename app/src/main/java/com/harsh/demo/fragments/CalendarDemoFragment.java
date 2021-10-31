@@ -1,4 +1,4 @@
-package com.harsh.demo;
+package com.harsh.demo.fragments;
 
 import android.app.AlertDialog;
 import android.content.res.ColorStateList;
@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.harsh.demo.CustomDialog;
+import com.harsh.demo.R;
 import com.harsh.hkutils.ExpandableLayout;
 import com.harsh.hkutils.calendar.EventCalendarView;
 import com.harsh.hkutils.calendar.GridViewSquareItem;

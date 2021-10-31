@@ -36,4 +36,11 @@
 		<attr name="android:duration" format="integer"/>
 		<attr name="maxScale" format="float"/>
 	</declare-styleable>
+
+	<declare-styleable name="TreeView">
+		<attr name="levelSeparation" format="dimension" />
+		<attr name="lineThickness" format="dimension" />
+		<attr name="lineColor" format="color" />
+		<attr name="useMaxSize" format="boolean" />
+	</declare-styleable>
 </resources>

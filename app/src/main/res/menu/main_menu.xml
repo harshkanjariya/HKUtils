@@ -9,4 +9,7 @@
 	<item android:id="@+id/animations"
 		android:title="Animations"
 		android:icon="@drawable/ic_baseline_layers_24"/>
+	<item android:id="@+id/tree"
+		android:title="TreeView"
+		android:icon="@drawable/ic_baseline_layers_24"/>
 </menu>

@@ -1,10 +1,10 @@
-package com.harsh.demo;
+package com.harsh.demo.models;
 
 import androidx.annotation.NonNull;
 
 public class Meeting {
-	String clientName;
-	String companyName;
+	public String clientName;
+	public String companyName;
 
 	@NonNull
 	@Override

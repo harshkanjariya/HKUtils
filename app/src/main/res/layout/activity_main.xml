@@ -20,7 +20,7 @@
 			android:layout_height="match_parent"
 			android:background="#ffffff"
 			android:id="@+id/main_frame"
-			android:name="com.harsh.demo.CalendarDemoFragment"/>
+			android:name="com.harsh.demo.fragments.CalendarDemoFragment"/>
 	</com.google.android.material.appbar.AppBarLayout>
 
 	<com.google.android.material.navigation.NavigationView
